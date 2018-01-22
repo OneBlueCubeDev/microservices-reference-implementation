@@ -81,6 +81,8 @@ export REDIS_CONNECTION_STRING=$(az group deployment show -g $RESOURCE_GROUP -n 
 export COSMOSDB_NAME=$(az group deployment show -g $RESOURCE_GROUP -n azuredeploy --query properties.outputs.deliveryCosmosDbName.value | sed -e 's/^"//' -e 's/"$//') && \
 export COSMOSDB_KEY=$(az group deployment show -g $RESOURCE_GROUP -n azuredeploy --query properties.outputs.deliveryCosmosDbKey.value | sed -e 's/^"//' -e 's/"$//') && \
 export COSMOSDB_ENDPOINT=$(az group deployment show -g $RESOURCE_GROUP -n azuredeploy --query properties.outputs.deliveryCosmosDbEndpoint.value | sed -e 's/^"//' -e 's/"$//') && \
+export DATABASE_NAME="${COSMOSDB_NAME}-db" && \
+export COLLECTION_NAME="${DATABASE_NAME}-col" && \
 # Package
 export MONGODB_CONNECTION=$(az group deployment show -g $RESOURCE_GROUP -n azuredeploy --query properties.outputs.packageConnectionString.value | sed -e 's/^"//' -e 's/"$//') && \
 # Ingestion and Scheduler
@@ -110,26 +112,6 @@ kubectl create namespace 3rdparty
 ```
 
 ## Deploy the Delivery service
-
-Provision extra Azure resources
-
-```bash
-export DATABASE_NAME="${COSMOSDB_NAME}-db" && \
-export COLLECTION_NAME="${DATABASE_NAME}-col"
-
-# Create a Cosmos DB database 
-az cosmosdb database create \
-    --name $COSMOSDB_NAME \
-    --db-name=$DATABASE_NAME \
-    --resource-group $RESOURCE_GROUP
-
-# Create a Cosmos DB collection
-az cosmosdb collection create \
-    --collection-name $COLLECTION_NAME \
-    --name $COSMOSDB_NAME \
-    --db-name $DATABASE_NAME \
-    --resource-group $RESOURCE_GROUP
-```
 
 Build the Delivery service
 
