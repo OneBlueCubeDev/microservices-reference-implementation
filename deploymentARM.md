@@ -57,7 +57,7 @@ Deployment
 * using Azure CLI 2.0
 
   ```bash
-  az group deployment create -g $RESOURCE_GROUP --template-file azuredeploy.json --parameters servicePrincipalClientId=${SP_APP_ID} \
+  az group deployment create -g $RESOURCE_GROUP --name azuredeploy --template-file azuredeploy.json --parameters servicePrincipalClientId=${SP_APP_ID} \
                                                                                              servicePrincipalClientSecret=${SP_CLIENT_SECRET} \
                                                                                              sshRSAPublicKey="$(cat ${SSH_PUBLIC_KEY_FILE})"
   ```
